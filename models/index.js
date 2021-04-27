@@ -1,13 +1,15 @@
+//association of  models and relationship 
+//User has many Blog post
+//Blog to a user
 const User = require('./User');
-const Gallery = require('./Blog');
-//const Painting = require('./Painting');
+const Blog = require('./Blog');
 
-Gallery.hasMany(Painting, {
-  foreignKey: 'gallery_id',
+User.hasMany(Blog, {
+  foreignKey: 'user_id',
 });
 
-Painting.belongsTo(Gallery, {
-  foreignKey: 'gallery_id',
+Blog.belongsTo(User, {
+  foreignKey: 'user_id',
 });
 
-module.exports = { User, Gallery, Painting };
+module.exports = {User,Blog};
