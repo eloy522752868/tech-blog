@@ -11,6 +11,26 @@ router.get('/', async (req, res) => {
     const blogs = blogData.map((blogsw) => blogsw.get({ plain: true }));
 
     // Pass serialized data and session flag into template
+        // Pass serialized data and session flag into template
+    res.render('homepage', { 
+      blogs, 
+      logged_in: req.session.logged_in
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+  
+});
+
+router.get('/blog', async (req, res) => {
+  try {
+    // Get all projects and JOIN with user data
+    const blogData = await Blog.findAll();
+
+    // Serialize data so the template can read it
+    const blogs = blogData.map((blogsw) => blogsw.get({ plain: true }));
+
+    // Pass serialized data and session flag into template
     res.render('homepage', { 
       blogs, 
       logged_in: req.session.logged_in 
@@ -19,6 +39,7 @@ router.get('/', async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 
 router.get('/blog/:id', async (req, res) => {
   try {
@@ -38,11 +59,48 @@ router.get('/blog/:id', async (req, res) => {
 router.get('/login', (req, res) => {
   // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
-    res.redirect('/profile');
+    res.redirect('/blog');
     return;
   }
 
   res.render('login');
+});
+
+router.get('/signup', async (req, res) => {
+  try {
+    // Get all projects and JOIN with user data
+    const blogData = await Blog.findAll();
+
+    // Serialize data so the template can read it
+    const blogs = blogData.map((blogsw) => blogsw.get({ plain: true }));
+
+    // Pass serialized data and session flag into template
+    res.render('signup', { 
+      blogs, 
+      logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+router.get('/dashboard', async (req, res) => {
+  try {
+    // Get all projects and JOIN with user data
+    const blogData = await Blog.findAll();
+
+    // Serialize data so the template can read it
+    const blogs = blogData.map((blogsw) => blogsw.get({ plain: true }));
+
+    // Pass serialized data and session flag into template
+    res.render('dashboard', { 
+      blogs, 
+      logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;

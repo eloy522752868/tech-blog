@@ -17,12 +17,11 @@
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="/blog">Home</a></li>
-      <li><a href="#">Dashboard</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
       {{#if logged_in}}
       <li><a id="logout" href="#">Logout</a></li>
       {{else}}
       <li><a href="/login">login</a></li>
-       <li><a id="logout" href="#">Logout</a></li>
       {{/if}}
     </ul>
   </div>
