@@ -1,21 +1,55 @@
 const router = require('express').Router();
-const { Project, User } = require('../models');
+const { User , Blog} = require('../models');
 const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
   try {
     // Get all projects and JOIN with user data
-    const projectData = await Project.findAll({
+    const blogData = await Blog.findAll({
 
     });
 
     // Serialize data so the template can read it
-    const projects = projectData.map((project) => project.get({ plain: true }));
+    const blogs = blogData.map((blog) => blog.get({ plain: true }));
 
     // Pass serialized data and session flag into template
     res.render('homepage', { 
-      projects, 
+      blogs, 
       logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.get('/blog', async (req, res) => {
+  try {
+    // Get all projects and JOIN with user data
+    const blogData = await Blog.findAll();
+
+    // Serialize data so the template can read it
+    const blogs = blogData.map((blogsw) => blogsw.get({ plain: true }));
+
+    // Pass serialized data and session flag into template
+    res.render('homepage', { 
+      blogs, 
+      logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+router.get('/blog/:id', async (req, res) => {
+  try {
+    const blogData = await Blog.findByPk(req.params.id);
+
+    const blog =  blogData.get({ plain: true });
+
+    res.render('blog', {
+      ...blog,
+      logged_in: req.session.logged_in
     });
   } catch (err) {
     res.status(500).json(err);
@@ -24,19 +58,19 @@ router.get('/', async (req, res) => {
 
 router.get('/project/:id', async (req, res) => {
   try {
-    const projectData = await Project.findByPk(req.params.id, {
+    const blogData = await Blog.findByPk(req.params.id, {
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['username'],
         },
       ],
     });
 
-    const project = projectData.get({ plain: true });
+    const blog = blogData.get({ plain: true });
 
     res.render('project', {
-      ...project,
+      ...blog,
       logged_in: req.session.logged_in
     });
   } catch (err) {
@@ -47,10 +81,11 @@ router.get('/project/:id', async (req, res) => {
 // Use withAuth middleware to prevent access to route
 router.get('/profile', withAuth, async (req, res) => {
   try {
+    console.log(req.session.user_id);
     // Find the logged in user based on the session ID
     const userData = await User.findByPk(req.session.user_id, {
       attributes: { exclude: ['password'] },
-      include: [{ model: Project }],
+      include: [{ model: Blog }],
     });
 
     const user = userData.get({ plain: true });
@@ -62,6 +97,7 @@ router.get('/profile', withAuth, async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
+  
 });
 
 router.get('/login', (req, res) => {
