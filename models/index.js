@@ -1,15 +1,13 @@
-//association of  models and relationship 
-//User has many Blog post
-//Blog to a user
 const User = require('./User');
-const Blog = require('./Blog');
+const Project = require('./Project');
 
-User.hasMany(Blog, {
+User.hasMany(Project, {
   foreignKey: 'user_id',
+  onDelete: 'CASCADE'
 });
 
-Blog.belongsTo(User, {
-  foreignKey: 'user_id',
+Project.belongsTo(User, {
+  foreignKey: 'user_id'
 });
 
-module.exports = {User,Blog};
+module.exports = { User, Project };
