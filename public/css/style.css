@@ -1,5 +1,23 @@
+/* 
+Eloy Gonzalez
+04/28/2021
+add changes css style to page
+*/
 header, .project:not(:last-child) {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 3px solid darkgray;
+}
+h1{
+ 
+  background-color: #056605;
+  border: 4px solid gray;
+  border-radius: 8px;
+}
+
+body{
+  background-color: lightgray;
+}
+header{
+  background-color: lightsteelblue;
 }
 
 .no-button {
